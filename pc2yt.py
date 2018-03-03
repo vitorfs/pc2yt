@@ -35,7 +35,8 @@ RETRIABLE_EXCEPTIONS = (httplib2.HttpLib2Error, IOError, httplib.NotConnected,
     httplib.CannotSendRequest, httplib.CannotSendHeader,
     httplib.ResponseNotReady, httplib.BadStatusLine)
 RETRIABLE_STATUS_CODES = [500, 502, 503, 504]
-CLIENT_SECRETS_FILE = 'client_secret.json'
+CLIENT_SECRETS_FILE = os.path.join(BASE_DIR, 'client_secret.json')
+CREDENTIALS_FILE = os.path.join(BASE_DIR, 'youtube.dat')
 SCOPES = ['https://www.googleapis.com/auth/youtube.upload']
 API_SERVICE_NAME = 'youtube'
 API_VERSION = 'v3'
@@ -64,7 +65,7 @@ def get_authenticated_service():
 
     flow = client.flow_from_clientsecrets(CLIENT_SECRETS_FILE, scope=SCOPES, message=tools.message_if_missing(CLIENT_SECRETS_FILE))
 
-    storage = file.Storage('youtube.dat')
+    storage = file.Storage(CREDENTIALS_FILE)
     credentials = storage.get()
     if credentials is None or credentials.invalid:
         credentials = tools.run_flow(flow, storage)
