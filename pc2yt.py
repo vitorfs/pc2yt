@@ -26,6 +26,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 AUDIOS_DIR = os.path.join(BASE_DIR, 'audios')
 VIDEOS_DIR = os.path.join(BASE_DIR, 'videos')
 BACKGROUND_IMAGE = os.path.join(BASE_DIR, 'background.png')
+LAST_PODCAST_FILE = os.path.join(BASE_DIR, '.last')
 FEED_URL = config('FEED_URL')
 
 httplib2.RETRIES = 1
@@ -137,8 +138,8 @@ def get_latest_podcasts():
     podcasts = list()
 
     last = None
-    if os.path.exists('.last'):
-        with open('.last', 'r') as f:
+    if os.path.exists(LAST_PODCAST_FILE):
+        with open(LAST_PODCAST_FILE, 'r') as f:
             last = f.read()
 
     d = feedparser.parse(FEED_URL)
@@ -156,7 +157,7 @@ def get_latest_podcasts():
             break
 
     last = d['entries'][0]['id']
-    with open('.last', 'w') as f:
+    with open(LAST_PODCAST_FILE, 'w') as f:
         f.write(last)
 
     if podcasts:
