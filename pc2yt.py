@@ -57,10 +57,6 @@ class Podcast(object):
 
 
 def get_authenticated_service():
-    '''flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRETS_FILE, SCOPES)
-    credentials = flow.run_console()
-    return build(API_SERVICE_NAME, API_VERSION, credentials = credentials)'''
-
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter, parents=[tools.argparser])
     flags = parser.parse_args([])
 
@@ -72,7 +68,6 @@ def get_authenticated_service():
         credentials = tools.run_flow(flow, storage)
     http = credentials.authorize(http=httplib2.Http())
 
-    # Build the service object.
     youtube = build(API_SERVICE_NAME, API_VERSION, http=http)
 
     return youtube
@@ -141,6 +136,7 @@ def get_latest_podcasts():
     if os.path.exists(LAST_PODCAST_FILE):
         with open(LAST_PODCAST_FILE, 'r') as f:
             last = f.read()
+            last = ''.join(last.splitlines())
 
     d = feedparser.parse(FEED_URL)
     for entry in d['entries']:
@@ -211,7 +207,7 @@ def convert_to_flv(podcasts):
 def upload_to_youtube(podcasts):
     youtube = get_authenticated_service()
     try:
-        for podcast in podcasts:
+        for podcast in reversed(podcasts):
             initialize_upload(youtube, podcast)
     except HttpError, e:
         print 'An HTTP error %d occurred:\n%s' % (e.resp.status, e.content)
