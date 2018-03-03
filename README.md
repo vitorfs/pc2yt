@@ -6,11 +6,20 @@ Read the instructions bellow carefully (and also check the source code, it's jus
 
 It probably won't work out-of-the-box -- sorry about that. 
 
-## How it Works
+## What it Does?
 
 * Watches a Podcast feed for new episodes;
 * Convert the episode to a video format using a static background image;
 * Push the video to a YouTube channel.
+
+## How it Works?
+
+* The script is deployed to a cloud server;
+* A crontab executes the script periodically;
+* First parse the podcast xml from the web, check if there is a new episode;
+* If there's a new episode, download it first to the server;
+* Grab a predefined image, generate a `.flv` video file using this static image as background;
+* When the video file is done, push it to a YouTube channel.
 
 ## Why?
 
@@ -135,3 +144,4 @@ An example where the script would be execute every hour, at 12:05, 13:05, 14:05,
 # m h  dom mon dow   command
 5 * * * * /home/pc2yt/venv/bin/python /home/pc2yt/pc2yt.py
 ```
+
