@@ -99,3 +99,12 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+client_secret.json
+youtube.dat
+.DS_Store
+audios
+videos
+.last
+ffmpeg
+background.png
