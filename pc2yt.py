@@ -22,12 +22,14 @@ import requests
 import feedparser
 
 
+FEED_URL = config('FEED_URL')
+PRIVACY_STATUS = config('PRIVACY_STATUS', default='private')
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 AUDIOS_DIR = os.path.join(BASE_DIR, 'audios')
 VIDEOS_DIR = os.path.join(BASE_DIR, 'videos')
 BACKGROUND_IMAGE = os.path.join(BASE_DIR, 'background.png')
 LAST_PODCAST_FILE = os.path.join(BASE_DIR, '.last')
-FEED_URL = config('FEED_URL')
 
 httplib2.RETRIES = 1
 MAX_RETRIES = 10
@@ -51,7 +53,7 @@ class Podcast(object):
         self.url = url
         self.category = '22'  # see youtube categories IDs
         self.keywords = ''
-        self.privacyStatus = 'private'
+        self.privacyStatus = PRIVACY_STATUS
         self.video_file = None
         self.audio_file = None
 
